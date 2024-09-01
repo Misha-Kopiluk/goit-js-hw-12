@@ -13,9 +13,9 @@ const loader = document.querySelector(".js-loader");
 const loadMoreBtn = document.querySelector(".js-load-more-btn");
 
 const lightbox = new SimpleLightbox(".gallery a", {
-    captionsData: "alt",
-    captionDelay: 250,
-    overlayOpacity: 0.8,
+  captionsData: "alt",
+  captionDelay: 250,
+  overlayOpacity: 0.8,
 });
 
 let page = 1;
@@ -64,9 +64,6 @@ const searchAndDisplayImages = async (event) => {
   galleryEl.innerHTML = creatingGaleri;
   lightbox.refresh();
     
-  const galleryCardItem = document.querySelector(".gallery-item");
-  cardHeigth = galleryCardItem.getBoundingClientRect().height;
-    
   loadMoreBtn.classList.remove("is-hidden");
   }
   catch (error) {
@@ -82,6 +79,16 @@ const searchAndDisplayImages = async (event) => {
   formEl.reset();
 }
 
+const pageScrollMarkup = () => {
+  const galleryElement = document.querySelector(".gallery-item");
+  cardHeigth = galleryElement.getBoundingClientRect().height;
+  window.scrollBy({
+    top: cardHeigth * 2,
+    behavior: 'smooth',
+  });
+}
+
+
 const buttonToDownloadMorePhotos = async () => {
   try {
     page++
@@ -91,10 +98,7 @@ const buttonToDownloadMorePhotos = async () => {
     galleryEl.insertAdjacentHTML("beforeend", creatingGaleri);
     lightbox.refresh();
 
-    window.scrollBy({
-      top: cardHeigth * 2,
-      behavior:"smooth",
-    })
+    pageScrollMarkup();
     
     const totalHits = Math.ceil(element.data.totalHits / 15);
     if (page >= totalHits) {
